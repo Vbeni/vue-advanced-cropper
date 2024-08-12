@@ -148,7 +148,7 @@ function getImageData(img) {
 							http.abort();
 						}
 					};
-					http.withCredentials = false;
+					http.withCredentials = true;
 					http.open('GET', img, true);
 					http.responseType = 'arraybuffer';
 					http.send(null);

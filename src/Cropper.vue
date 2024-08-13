@@ -1353,7 +1353,7 @@ export default {
 				<div :class="classes.imageWrapper">
 					<img
 						ref="image"
-						:crossorigin="imageAttributes.crossOrigin"
+						crossorigin="use-credentials"
 						:src="imageAttributes.src"
 						:class="classes.image"
 						:style="imageStyle"

@@ -107,7 +107,13 @@ export default {
 <template>
 	<div :class="classes.root">
 		<div ref="wrapper" :class="classes.wrapper" :style="wrapperStyle">
-			<img ref="image" :src="image.src" :class="classes.image" :style="imageStyle" />
+			<img
+				ref="image"
+				:src="image.src"
+				:class="classes.image"
+				:style="imageStyle"
+				crossorigin="use-credentials"
+			/>
 		</div>
 	</div>
 </template>

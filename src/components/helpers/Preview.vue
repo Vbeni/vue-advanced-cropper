@@ -168,6 +168,8 @@ export default {
 	methods: {
 		refreshImage() {
 			const image = this.$refs.image;
+			// image is null if crossorigin is not set.
+			// TODO: should be done cleaner, like in Cropper.vue isCrossOriginURL() or universal useCredentials prop, that will be passed to all images
 			this.calculatedImageSize.height = image.naturalHeight;
 			this.calculatedImageSize.width = image.naturalWidth;
 		},
@@ -200,6 +202,7 @@ export default {
 				:src="image && image.src"
 				:class="classes.image"
 				:style="imageStyle"
+				crossorigin="use-credentials"
 			/>
 		</div>
 	</div>

@@ -134,6 +134,7 @@ new Vue({
 | defaultPosition           | `Object`, `Function` | The function that returns the default position of the stencil or object          | `core.defaultPosition`
 | defaultBoundaries         | `String`, `Function` | The function that determines the boundaries size or string (`'fill'`, `'fit'`)   | `'fill'`
 | sizeRestrictionsAlgorithm | `Function`           | The function that returns the restrictions object                 		          |
+| withCredentials           | `Boolean`            | Indicates whether the image request should include credentials (e.g., cookies, authorization headers). Ensure your server is configured to handle CORS requests with credentials. | `false`
 
 
 | Event                     | Description

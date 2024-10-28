@@ -152,6 +152,10 @@ export default {
 				return !invalid;
 			},
 		},
+		withCredentials: {
+			type: Boolean,
+			default: false,
+		},
 		priority: {
 			type: String,
 			default: 'coordinates',
@@ -243,6 +247,7 @@ export default {
 				src: this.imageAttributes.src,
 				width: this.imageAttributes.width,
 				height: this.imageAttributes.height,
+				withCredentials: this.withCredentials,
 				transforms: this.imageTransforms,
 			};
 		},
@@ -1021,12 +1026,12 @@ export default {
 				if (isCrossOriginURL(this.src)) {
 					let crossOrigin = isUndefined(this.crossOrigin) ? this.canvas : this.crossOrigin;
 					if (crossOrigin === true) {
-						crossOrigin = 'anonymous';
+						crossOrigin = this.withCredentials ? 'use-credentials' : 'anonymous';
 					}
 					this.imageAttributes.crossOrigin = crossOrigin || null;
 				}
 				if (this.checkOrientation) {
-					const promise = parseImage(this.src);
+					const promise = parseImage(this.src, this.withCredentials);
 					setTimeout(() => {
 						promise.then(this.onParseImage);
 					}, this.transitionTime);
@@ -1353,7 +1358,7 @@ export default {
 				<div :class="classes.imageWrapper">
 					<img
 						ref="image"
-						crossorigin="use-credentials"
+						:crossorigin="imageAttributes.crossOrigin"
 						:src="imageAttributes.src"
 						:class="classes.image"
 						:style="imageStyle"

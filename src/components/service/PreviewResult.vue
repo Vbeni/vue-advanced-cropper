@@ -112,7 +112,7 @@ export default {
 				:src="image.src"
 				:class="classes.image"
 				:style="imageStyle"
-				crossorigin="use-credentials"
+				v-bind="image.withCredentials ? { crossorigin: 'use-credentials' } : {}"
 			/>
 		</div>
 	</div>

@@ -131,11 +131,9 @@ export default {
 		},
 		defaultPosition: {
 			type: [Function, Object],
-			default: algorithms.defaultPosition,
 		},
 		defaultVisibleArea: {
 			type: [Function, Object],
-			default: algorithms.defaultVisibleArea,
 		},
 		defaultTransforms: {
 			type: [Function, Object],
@@ -153,6 +151,10 @@ export default {
 				}
 				return !invalid;
 			},
+		},
+		withCredentials: {
+			type: Boolean,
+			default: false,
 		},
 		priority: {
 			type: String,
@@ -212,7 +214,7 @@ export default {
 			imageAttributes: {
 				width: null,
 				height: null,
-				crossOrigin: false,
+				crossOrigin: null,
 				src: null,
 			},
 			defaultImageTransforms: {
@@ -245,6 +247,7 @@ export default {
 				src: this.imageAttributes.src,
 				width: this.imageAttributes.width,
 				height: this.imageAttributes.height,
+				withCredentials: this.withCredentials,
 				transforms: this.imageTransforms,
 			};
 		},
@@ -535,7 +538,7 @@ export default {
 		window.addEventListener('resize', this.refresh);
 		window.addEventListener('orientationchange', this.refresh);
 	},
-	destroyed() {
+	unmounted() {
 		window.removeEventListener('resize', this.refresh);
 		window.removeEventListener('orientationchange', this.refresh);
 		if (this.imageAttributes.revoke && this.imageAttributes.src) {
@@ -859,11 +862,13 @@ export default {
 					);
 				}
 
+				const defaultPositionAlgorithm = this.defaultPosition || algorithms.defaultPosition;
+
 				const transforms = [
 					defaultSize,
 					({ coordinates }) => ({
-						...(isFunction(this.defaultPosition)
-							? this.defaultPosition({
+						...(isFunction(defaultPositionAlgorithm)
+							? defaultPositionAlgorithm({
 									coordinates,
 									imageSize: this.imageSize,
 									visibleArea: this.visibleArea,
@@ -948,8 +953,10 @@ export default {
 						this.resetCoordinates();
 					}
 
-					this.visibleArea = isFunction(this.defaultVisibleArea)
-						? this.defaultVisibleArea({
+					let algorithm = this.defaultVisibleArea || algorithms.defaultVisibleArea;
+
+					this.visibleArea = isFunction(algorithm)
+						? algorithm({
 								imageSize: this.imageSize,
 								boundaries: this.boundaries,
 								coordinates: this.priority !== 'visible-area' ? this.coordinates : null,
@@ -1005,12 +1012,10 @@ export default {
 				});
 		},
 		onChange(debounce = true) {
-			if (this.$listeners && this.$listeners.change) {
-				if (debounce && this.debounce) {
-					this.debouncedUpdate();
-				} else {
-					this.update();
-				}
+			if (debounce && this.debounce) {
+				this.debouncedUpdate();
+			} else {
+				this.update();
 			}
 		},
 		onChangeImage() {
@@ -1021,12 +1026,12 @@ export default {
 				if (isCrossOriginURL(this.src)) {
 					let crossOrigin = isUndefined(this.crossOrigin) ? this.canvas : this.crossOrigin;
 					if (crossOrigin === true) {
-						crossOrigin = 'anonymous';
+						crossOrigin = this.withCredentials ? 'use-credentials' : 'anonymous';
 					}
-					this.imageAttributes.crossOrigin = crossOrigin;
+					this.imageAttributes.crossOrigin = crossOrigin || null;
 				}
 				if (this.checkOrientation) {
-					const promise = parseImage(this.src);
+					const promise = parseImage(this.src, this.withCredentials);
 					setTimeout(() => {
 						promise.then(this.onParseImage);
 					}, this.transitionTime);
@@ -1330,6 +1335,7 @@ export default {
 			}
 		},
 	},
+	emits: ['change', 'error', 'ready'],
 };
 </script>
 

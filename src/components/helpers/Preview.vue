@@ -161,7 +161,7 @@ export default {
 		window.addEventListener('resize', this.refresh);
 		window.addEventListener('orientationchange', this.refresh);
 	},
-	destroyed() {
+	unmounted() {
 		window.removeEventListener('resize', this.refresh);
 		window.removeEventListener('orientationchange', this.refresh);
 	},
@@ -200,6 +200,7 @@ export default {
 				:src="image && image.src"
 				:class="classes.image"
 				:style="imageStyle"
+				v-bind="image.withCredentials ? { crossorigin: 'use-credentials' } : {}"
 			/>
 		</div>
 	</div>

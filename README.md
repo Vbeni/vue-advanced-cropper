@@ -15,7 +15,7 @@
 
 ---
 
-:fire: **HEADS UP!** You're currently looking at the branch for Vue 2. For the Vue 3 branch, [please check out the `vue-next` branch](https://github.com/advanced-cropper/vue-advanced-cropper/tree/vue-next).
+:fire: **HEADS UP!** You're currently looking at the branch for Vue 3. For the Vue 2, [please check out `master` branch](https://github.com/advanced-cropper/vue-advanced-cropper).
 
 ---
 
@@ -39,11 +39,11 @@ The codesandbox for [mobile](https://codesandbox.io/s/vue-advanced-cropper-mobil
 ### Vue 3.0
 
 ```bash
-npm install --save vue-advanced-cropper
+npm install --save vue-advanced-cropper@vue-3
 ```
 
 ```bash
-yarn add vue-advanced-cropper
+yarn add vue-advanced-cropper@next
 ```
 
 ### Vue 2.0
@@ -134,6 +134,7 @@ new Vue({
 | defaultPosition           | `Object`, `Function` | The function that returns the default position of the stencil or object          | `core.defaultPosition`
 | defaultBoundaries         | `String`, `Function` | The function that determines the boundaries size or string (`'fill'`, `'fit'`)   | `'fill'`
 | sizeRestrictionsAlgorithm | `Function`           | The function that returns the restrictions object                 		          |
+| withCredentials           | `Boolean`            | Indicates whether the image request should include credentials (e.g., cookies, authorization headers). Ensure your server is configured to handle CORS requests with credentials. | `false`
 
 
 | Event                     | Description

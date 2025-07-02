@@ -1,5 +1,5 @@
 {
-  "name": "@reelcrafter/vue-advanced-cropper",
+  "name": "vue-advanced-cropper",
   "version": "2.8.9-withcredentials.1",
   "private": true,
   "description": "The advanced library to create your own croppers suited for any website design",
